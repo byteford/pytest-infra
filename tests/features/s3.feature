@@ -1,7 +1,7 @@
 Feature: S3
 
     Background:
-        Given I am logged in
+        Given I am logged in as testUser
     
     @after_s3
     Scenario: Can read file

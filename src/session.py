@@ -3,5 +3,5 @@ class session:
     session = ""
     def get_session(self):
         return self.session
-    def __init__(self):
-        self.session = boto3.Session()
+    def create_session(self, profile_name="Default"):
+        self.session = boto3.Session(profile_name=profile_name)
