@@ -1,5 +1,5 @@
 from random import random
-
+from botocore import exceptions
 
 class s3_obj:
     location = ""
@@ -37,8 +37,12 @@ class s3_obj:
         print("delete", self.location)
 
 
-    def is_file_in_location(self):
-        return False
+    def is_file_in_location(self, s3_client):
+        try:
+            s3_client.head_object(Bucket=self.location,Key="test_file")
+        except exceptions.ClientError:
+            return False
+        return True
 
     def read_file(self):
         return dict()
