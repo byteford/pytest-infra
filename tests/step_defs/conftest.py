@@ -11,6 +11,10 @@ def session():
 def sts_client(session):
     yield session.get_session().client('sts')
 
+@fixture
+def s3_client(session):
+    yield session.get_session().client('s3')
+
 @given('I am logged in')
 def i_am_am_logged_in(sts_client):
-    print(sts_client.get_caller_identity())
+    sts_client.get_caller_identity()

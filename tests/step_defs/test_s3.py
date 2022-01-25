@@ -16,18 +16,19 @@ def test_can_read_file():
     pass
 
 @given(parsers.parse('there is a file in {location}'))
-def there_is_a_file_in_bucket_location(s3_context, location):
+def there_is_a_file_in_bucket_location(s3_context, s3_client, location):
     s3_context.set_location(location)
     if s3_context.is_file_in_location():
         print("file exists not uploading")
     else:
-        s3_context.upload_file()
+        s3_context.upload_file(s3_client)
     assert True
 
 @when(parsers.parse('I try and read the file'))
 def i_try_and_read_the_file(s3_context):
     s3_context.read_file()
 
-@then('I don\'t get an error')
-def then_i_dont_get_an_error():
-    assert True
+@then('I don\'t get an S3 error')
+def i_dont_get_an_s3_error(s3_context):
+    err = s3_context.get_error()
+    assert err is None

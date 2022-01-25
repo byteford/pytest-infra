@@ -1,11 +1,15 @@
-
-
 from random import random
 
 
 class s3_obj:
     location = ""
     all_locations = []
+    error = None
+    log = ""
+
+    def get_error(self):
+        return self.error
+
     def set_location(self, location):
         self.location = location
         self.all_locations.append(location)
@@ -19,8 +23,14 @@ class s3_obj:
         self.location = ""
         pass
     
-    def upload_file(self):
+    def upload_file(self, s3_client):
         print("upload", self.location)
+        try:
+            self.log = s3_client.put_object(Body=b"test_file",Bucket=self.location,Key="test_file")
+        except Exception as err:
+            print ("error: ", err)
+            self.error = err
+
         return self.location
 
     def delete_file(self):
@@ -28,7 +38,7 @@ class s3_obj:
 
 
     def is_file_in_location(self):
-        return random() > 0.5
+        return False
 
     def read_file(self):
         return dict()
