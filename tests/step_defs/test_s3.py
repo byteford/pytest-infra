@@ -6,10 +6,10 @@ from pytest import fixture
 
 
 @fixture
-def s3_context():
+def s3_context(s3_client):
     obj = src.S3.s3_obj()
     yield obj
-    obj.cleanup_location()
+    obj.cleanup_location(s3_client)
 
 @scenario('s3.feature', 'Can read file')
 def test_can_read_file():
@@ -25,8 +25,8 @@ def there_is_a_file_in_bucket_location(s3_context, s3_client, location):
     assert s3_context.get_error is not None
 
 @when(parsers.parse('I try and read the file'))
-def i_try_and_read_the_file(s3_context):
-    s3_context.read_file()
+def i_try_and_read_the_file(s3_context, s3_client):
+    s3_context.read_file(s3_client)
 
 @then('I don\'t get an S3 error')
 def i_dont_get_an_s3_error(s3_context):
