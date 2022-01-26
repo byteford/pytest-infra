@@ -1,13 +1,13 @@
 """file for s3 steps"""
 
 from pytest_bdd import scenario, given, when, then, parsers
-import src.S3
+from src.aws_S3 import s3_obj
 from pytest import fixture
 
 
 @fixture
 def s3_context(s3_setup_client):
-    obj = src.S3.s3_obj()
+    obj = s3_obj()
     yield obj
     obj.cleanup_location(s3_setup_client)
 
